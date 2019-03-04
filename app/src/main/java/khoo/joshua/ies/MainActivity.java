@@ -12,6 +12,9 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 import com.jjoe64.graphview.series.Series;
 
 import java.util.Vector;
+import java.util.List;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,17 +35,17 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        InputStream inputStream = getResources().openRawResource(R.raw.stats);
+        InputStream inputStream = getResources().openRawResource(R.raw.eeg);
         CSVFile csvFile = new CSVFile(inputStream);
         List eeg_list = csvFile.read();
 
         double x = 0.0, y = 0.0;
         GraphView graph = (GraphView) findViewById(R.id.graph);
         series = new LineGraphSeries<DataPoint>();
-        for(int i = 0; i < 500; i++) {
+        for(int i = 0; i < eeg_list.size(); i++) {
             x = x + 0.1;
-            y = Math.sin(x);
-            series.appendData(new DataPoint(x, y), true, 500);
+            // y = eeg_list.get(i)
+            series.appendData(new DataPoint(x, Math.sin(x)), true, eeg_list.size());
         }
         graph.addSeries(series);
     }
@@ -50,18 +53,19 @@ public class MainActivity extends AppCompatActivity {
     @OnClick(R.id.button_filter) public void onClick() {
         filter = new Filter();
         double x = 0.0, y = 0.0;
-        Vector<Double> data = new Vector<Double>();
+        // Vector<Double> data = new Vector<Double>();
         GraphView graph = (GraphView) findViewById(R.id.graph);
+        InputStream inputStream = getResources().openRawResource(R.raw.eeg);
+        CSVFile csvFile = new CSVFile(inputStream);
+        List eeg_list = csvFile.read();
         series = new LineGraphSeries<DataPoint>();
-        for(int i = 0; i < 500; i++) {
-            y = Math.sin(x);
-            data.add(y);
-
-        }
-        filter.removeDC(data);
+//        for(int i = 0; i < eeg_list.size(); i++) {
+//            data.add(eeg_list.get(i));
+//        }
+//        filter.removeDC(data);
         for(int i = 0; i < 500; i++) {
             x = x + 0.1;
-            series.appendData(new DataPoint(x, data.get(i)), true, 500);
+            series.appendData(new DataPoint(x, Math.sin(x/2)), true, eeg_list.size());
         }
         graph.addSeries(series);
     }

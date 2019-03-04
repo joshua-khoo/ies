@@ -6,37 +6,31 @@
     android:layout_height="fill_parent"
     tools:context=".MainActivity">
 
-    <LinearLayout
+    <com.jjoe64.graphview.GraphView
+        android:id="@+id/graph"
+        android:layout_width="411dp"
         android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        android:layout_weight=".5" >
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="35dp" />
 
-        <com.jjoe64.graphview.GraphView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/graph"/>
+    <Button
+        android:id="@+id/button_raw"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/textView"
+        android:layout_alignParentBottom="true"
+        android:layout_weight="1"
+        android:text="View Raw Data" />
 
-        <Button
-            android:id="@+id/button_filter"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_alignEnd="@+id/textView"
-            android:layout_alignParentBottom="true"
-            android:layout_weight="1"
-            android:text="View Filtered Data"
-            tools:layout_editor_absoluteX="221dp"
-            tools:layout_editor_absoluteY="0dp" />
-
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        android:layout_weight="1">
-
-    </LinearLayout>
-
-
+    <Button
+        android:id="@+id/button_filter"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/textView"
+        android:layout_alignParentBottom="true"
+        android:layout_weight="1"
+        android:text="View Filtered Data"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="50dp" />
 
 </android.support.constraint.ConstraintLayout>
