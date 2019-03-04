@@ -32,6 +32,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        InputStream inputStream = getResources().openRawResource(R.raw.stats);
+        CSVFile csvFile = new CSVFile(inputStream);
+        List eeg_list = csvFile.read();
+
         double x = 0.0, y = 0.0;
         GraphView graph = (GraphView) findViewById(R.id.graph);
         series = new LineGraphSeries<DataPoint>();
