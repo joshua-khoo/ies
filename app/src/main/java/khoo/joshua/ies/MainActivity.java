@@ -1,27 +1,21 @@
 package khoo.joshua.ies;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.Button;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.series.DataPoint;
-import com.jjoe64.graphview.series.LineGraphSeries;
-import com.jjoe64.graphview.series.Series;
-
-import java.util.Vector;
+import java.util.Arrays;
 import java.util.List;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ListView graphs;
-
+    private ListView lvGraphs;
+    private ArrayAdapter adapter;
+    private static List<String> graphs;
 
     // Used to load the 'native-lib' library on application startup.
     static {
@@ -33,30 +27,28 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        graphs = Arrays.asList("Graph raw data", "Graph filtered data");
+        lvGraphs = (ListView) findViewById(R.id.lvGraphs);
+        adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_activated_1, graphs);
+        lvGraphs.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        lvGraphs.setAdapter(adapter);
 
+        lvGraphs.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent newActivity;
+                switch(position) {
+                    case 0: // raw data graph
+                        newActivity = new Intent(MainActivity.this, RawDataGraphActivity.class);
+                        startActivity(newActivity);
+                        break;
+                    case 1: // filtered data graph
+                        newActivity = new Intent(MainActivity.this, FilterDataGraphActivity.class);
+                        startActivity(newActivity);
+                        break;
+                }
+            }
+        });
     }
 
-    private void addGraphs() {
-
-    }
-
-    @OnClick(R.id.button_filter) public void onClick() {
-        filter = new Filter();
-        double x = 0.0, y = 0.0;
-        // Vector<Double> data = new Vector<Double>();
-        GraphView graph = (GraphView) findViewById(R.id.graph);
-        InputStream inputStream = getResources().openRawResource(R.raw.eeg);
-        CSVFile csvFile = new CSVFile(inputStream);
-        List eeg_list = csvFile.read();
-        series = new LineGraphSeries<DataPoint>();
-//        for(int i = 0; i < eeg_list.size(); i++) {
-//            data.add(eeg_list.get(i));
-//        }
-//        filter.removeDC(data);
-        for(int i = 0; i < 500; i++) {
-            x = x + 0.1;
-            series.appendData(new DataPoint(x, Math.sin(x/2)), true, eeg_list.size());
-        }
-        graph.addSeries(series);
-    }
 }
